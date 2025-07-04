@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Shope</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #f6f6f6;
+      padding-top: 100px;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #232946 0%, #6d28d9 50%, #14b8a6 100%);
+      color: #fff;
+      padding: 1.5rem 2.5rem;
+      border-radius: 0 0 22px 22px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      min-height: 80px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #fff;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .ad-box {
+      background: linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%);
+      color: #d35400;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 1.5rem 1rem 1rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(245, 61, 45, 0.08);
+    }
+    .products {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2.5rem 0 2.5rem 0;
+      flex-wrap: wrap;
+    }
+    .product-box {
+      background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+      color: #fff;
+      flex: 1 1 300px;
+      max-width: 350px;
+      min-width: 250px;
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(24, 90, 157, 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .product-box:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(24, 90, 157, 0.18);
+    }
+    .product-img {
+      width: 120px;
+      height: 120px;
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+    .product-price {
+      font-size: 1.1rem;
+      color: #ffe082;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .buy-btn {
+      background: #f57224;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .buy-btn:hover {
+      background: #f53d2d;
+    }
+    @media (max-width: 800px) {
+      .products {
+        flex-direction: column;
+        align-items: center;
+      }
+      .product-box {
+        max-width: 90vw;
+      }
+    }
+    #ad-carousel {
+      position: relative;
+      overflow: hidden;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    #ad-carousel .slide {
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      opacity: 0;
+      transition: opacity 0.6s;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #ad-carousel .slide.active {
+      opacity: 1;
+      position: relative;
+    }
+    .slide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      position: absolute;
+      left: 0; top: 0;
+      z-index: 1;
+    }
+    .slide-overlay {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 1.5rem 0;
+      background: rgba(0,0,0,0.35);
+      border-radius: 12px;
+    }
+    .slide-overlay span {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .slide-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      padding: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    @media (max-width: 800px) {
+      #ad-carousel {
+        height: 200px;
+      }
+      .slide-icon {
+        width: 36px;
+        height: 36px;
+        padding: 4px;
+      }
+      .slide-overlay span {
+        font-size: 1rem;
+      }
+    }
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: center;
+    }
+    .product-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 1px 4px rgba(24, 90, 157, 0.08);
+      width: 90%;
+      max-width: 250px;
+    }
+    .product-item img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .product-item span {
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 500;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.25rem;
+      font-weight: 500;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-links a:hover {
+      background: #232946;
+      color: #ffe082;
+    }
+    .homepage-banner {
+      width: 100%;
+      margin: 0 auto 2rem auto;
+      background: linear-gradient(90deg, #6d28d9 0%, #14b8a6 100%);
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(20, 184, 166, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      max-width: 1100px;
+      padding: 2.5rem 1.5rem 2rem 1.5rem;
+      position: relative;
+      top: 0;
+      margin-bottom: 3.5rem;
+    }
+    .banner-content {
+      width: 100%;
+      text-align: center;
+    }
+    .homepage-banner h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .homepage-banner p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .banner-images {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .banner-images img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      background: #fff;
+      border: 3px solid #fff;
+      transition: transform 0.2s;
+    }
+    .banner-images img:hover {
+      transform: scale(1.08) rotate(-2deg);
+      border-color: #ffe082;
+    }
+    @media (max-width: 700px) {
+      .homepage-banner {
+        flex-direction: column;
+        min-height: 180px;
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+      }
+      .homepage-banner h1 {
+        font-size: 1.3rem;
+      }
+      .banner-images img {
+        width: 60px;
+        height: 60px;
+      }
+      .banner-images {
+        gap: 1rem;
+      }
+    }
+    .hero-section {
+      position: relative;
+      width: 100%;
+      min-height: 380px;
+      max-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 3.5rem;
+      border-radius: 0 0 22px 22px;
+    }
+    .hero-bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      filter: brightness(0.6) blur(0.5px);
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(20, 20, 40, 0.45);
+      z-index: 2;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      color: #fff;
+      padding: 2.5rem 1rem 2.5rem 1rem;
+    }
+    .hero-content h1 {
+      font-size: 2.7rem;
+      font-weight: 900;
+      margin-bottom: 1.1rem;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .hero-content p {
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+    .hero-btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    }
+    .hero-btn.primary {
+      background: linear-gradient(90deg, #6d28d9 0%, #14b8a6 100%);
+      color: #fff;
+      border: none;
+    }
+    .hero-btn.primary:hover {
+      background: #232946;
+      color: #ffe082;
+    }
+    .hero-btn.secondary {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 2px solid #fff;
+    }
+    .hero-btn.secondary:hover {
+      background: #fff;
+      color: #232946;
+    }
+    @media (max-width: 700px) {
+      .hero-section {
+        min-height: 220px;
+        max-height: 320px;
+        border-radius: 0 0 12px 12px;
+      }
+      .hero-content h1 {
+        font-size: 1.3rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+      .hero-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+      }
+    }
+    .support-details {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      margin: 2.5rem 0 3.5rem 0;
+      padding: 1.5rem 0;
+      background: rgba(35,41,70,0.07);
+      border-radius: 18px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .support-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1.1rem;
+      color: #232946;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .support-item img {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 0.2rem;
+      filter: drop-shadow(0 2px 8px rgba(20,184,166,0.10));
+    }
+    .support-item span {
+      margin-top: 0.2rem;
+    }
+    .support-item:hover img {
+      transform: scale(1.12) rotate(-4deg);
+      transition: transform 0.2s;
+    }
+    .support-item:hover span {
+      color: #6d28d9;
+    }
+    .hero-btn, .buy-btn, .nav-links a {
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .hero-btn:hover, .buy-btn:hover, .nav-links a:hover {
+      box-shadow: 0 4px 16px rgba(20,184,166,0.18);
+      transform: scale(1.06);
+    }
+    .product-box {
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .product-box:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(24, 90, 157, 0.18);
+    }
+    .banner-images img, .product-img img {
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .banner-images img:hover, .product-img img:hover {
+      transform: scale(1.10) rotate(-2deg);
+      box-shadow: 0 4px 16px rgba(20,184,166,0.18);
+    }
+    .support-emoji {
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.2rem;
+    }
+    .product-showcase-section {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 3.5rem auto;
+      padding: 2.5rem 1.5rem 2rem 1.5rem;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(20, 184, 166, 0.07);
+    }
+    .showcase-filters {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.2rem;
+      justify-content: flex-end;
+    }
+    .showcase-filters select {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #f6f6f6;
+      color: #232946;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .showcase-filters select:focus {
+      border: 1.5px solid #14b8a6;
+    }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2.2rem 1.5rem;
+      align-items: start;
+    }
+    .showcase-category {
+      grid-column: 1 / -1;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #6d28d9;
+      margin: 1.5rem 0 0.5rem 0;
+      letter-spacing: 1px;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .showcase-product {
+      background: linear-gradient(135deg, #e0f7fa 0%, #f6f6f6 100%);
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(20,184,166,0.07);
+      padding: 1.2rem 1rem 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .showcase-product:hover {
+      box-shadow: 0 8px 24px rgba(20,184,166,0.18);
+      transform: translateY(-6px) scale(1.04);
+    }
+    .showcase-product img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #fff;
+      margin-bottom: 0.5rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .showcase-product img:hover {
+      transform: scale(1.10) rotate(-2deg);
+      box-shadow: 0 4px 16px rgba(20,184,166,0.18);
+    }
+    .showcase-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .showcase-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #232946;
+      margin-bottom: 0.2rem;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .showcase-price {
+      font-size: 1.1rem;
+      color: #14b8a6;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .showcase-cart-btn {
+      background: linear-gradient(90deg, #6d28d9 0%, #14b8a6 100%);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .showcase-cart-btn:hover {
+      background: #232946;
+      color: #ffe082;
+      box-shadow: 0 4px 16px rgba(20,184,166,0.18);
+      transform: scale(1.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo-title">
+      <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="Logo" class="company-logo">
+      <span style="font-size:1.5rem;font-weight:bold;letter-spacing:2px;">Your Shope</span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">🏠 Home</a>
+      <a href="#contact">📞 Contact</a>
+      <a href="#info">ℹ️ Info</a>
+      <a href="#about">✨ About</a>
+    </nav>
+  </div>
+  <div class="hero-section" onclick="window.location.href='products.html'" style="cursor:pointer;">
+    <video class="hero-bg-video" autoplay loop muted playsinline poster="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&w=1200&h=600&fit=crop">
+      <source src="https://videos.pexels.com/video-files/856192/856192-hd_1920_1080_25fps.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Top Electronics at Best Prices</h1>
+      <p>Discover the latest gadgets and home appliances. Enjoy exclusive offers, fast delivery, and a 100% satisfaction guarantee!</p>
+      <div class="hero-buttons">
+        <a href="products.html?show=electronics" class="hero-btn primary">Shop Now</a>
+        <a href="#about" class="hero-btn secondary">Learn More</a>
+      </div>
+    </div>
+  </div>
+  <div class="homepage-banner" onclick="window.location.href='products.html'" style="cursor:pointer;">
+    <div class="banner-content">
+      <h1>Featured Home Appliances & Gadgets</h1>
+      <p>Upgrade your lifestyle with the latest gadgets and must-have appliances!</p>
+      <div class="banner-images">
+        <img src="https://images.pexels.com/photos/396969/pexels-photo-396969.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Washing Machine">
+        <img src="https://images.pexels.com/photos/461382/pexels-photo-461382.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Blender">
+        <img src="https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Smartphone">
+        <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&w=120&h=120&fit=crop" alt="Laptop">
+      </div>
+    </div>
+  </div>
+  <div class="support-details">
+    <div class="support-item">
+      <span class="support-emoji" role="img" aria-label="bus">🚌</span>
+      <span>Free Delivery</span>
+    </div>
+    <div class="support-item">
+      <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Warranty">
+      <span>1 Year Warranty</span>
+    </div>
+    <div class="support-item">
+      <img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" alt="Money-Back Guarantee">
+      <span>Money-Back Guarantee</span>
+    </div>
+  </div>
+  <div class="ad-box" id="ad-carousel">
+    <div class="slide active">
+      <img class="slide-img" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80" alt="Sofa">
+      <div class="slide-overlay">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" alt="Sofa Icon" class="slide-icon">
+        <span>Sofa - Mega Discount!</span>
+      </div>
+    </div>
+    <div class="slide">
+      <img class="slide-img" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Airbuds">
+      <div class="slide-overlay">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046858.png" alt="Airbuds Icon" class="slide-icon">
+        <span>Airbuds - Crystal Clear Sound!</span>
+      </div>
+    </div>
+    <div class="slide">
+      <img class="slide-img" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Laptop">
+      <div class="slide-overlay">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046876.png" alt="Laptop Icon" class="slide-icon">
+        <span>Laptop - Work & Play!</span>
+      </div>
+    </div>
+    <div class="slide">
+      <img class="slide-img" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80" alt="Smartphone">
+      <div class="slide-overlay">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046869.png" alt="Smartphone Icon" class="slide-icon">
+        <span>Smartphone - Latest Models!</span>
+      </div>
+    </div>
+  </div>
+  <div class="product-showcase-section">
+    <div class="showcase-filters">
+      <select>
+        <option>Price</option>
+        <option>Under Rs. 5,000</option>
+        <option>Rs. 5,000 - Rs. 20,000</option>
+        <option>Above Rs. 20,000</option>
+      </select>
+      <select>
+        <option>Brand</option>
+        <option>Samsung</option>
+        <option>Apple</option>
+        <option>Haier</option>
+        <option>Philips</option>
+      </select>
+      <select>
+        <option>Features</option>
+        <option>Wireless</option>
+        <option>Smart</option>
+        <option>Energy Efficient</option>
+      </select>
+    </div>
+    <div class="showcase-grid">
+      <!-- Kitchen Category -->
+      <div class="showcase-category">Kitchen</div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/461382/pexels-photo-461382.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Blender">
+        <div class="showcase-info">
+          <span class="showcase-title">Blender</span>
+          <span class="showcase-price">Rs. 2,199</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Microwave Oven">
+        <div class="showcase-info">
+          <span class="showcase-title">Microwave Oven</span>
+          <span class="showcase-price">Rs. 8,499</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Gadgets Category -->
+      <div class="showcase-category">Gadgets</div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Smartphone">
+        <div class="showcase-info">
+          <span class="showcase-title">Smartphone</span>
+          <span class="showcase-price">Rs. 19,999</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&w=120&h=120&fit=crop" alt="Laptop">
+        <div class="showcase-info">
+          <span class="showcase-title">Laptop</span>
+          <span class="showcase-price">Rs. 54,999</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Smartwatch">
+        <div class="showcase-info">
+          <span class="showcase-title">Smartwatch</span>
+          <span class="showcase-price">Rs. 3,999</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Appliances Category -->
+      <div class="showcase-category">Appliances</div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/396969/pexels-photo-396969.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Washing Machine">
+        <div class="showcase-info">
+          <span class="showcase-title">Washing Machine</span>
+          <span class="showcase-price">Rs. 24,999</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="showcase-product">
+        <img src="https://images.pexels.com/photos/373541/pexels-photo-373541.jpeg?auto=compress&w=120&h=120&fit=crop" alt="Refrigerator">
+        <div class="showcase-info">
+          <span class="showcase-title">Refrigerator</span>
+          <span class="showcase-price">Rs. 34,999</span>
+          <button class="showcase-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const slides = document.querySelectorAll('#ad-carousel .slide');
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 2500);
+
+    // Electronics products
+    function showElectronics() {
+      document.getElementById('electronics-box').innerHTML = `
+        <div class="product-title">Electronics</div>
+        <div class="product-list">
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=80&q=80" alt="Airbuds">
+            <span>Airbuds</span>
+          </div>
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=80&q=80" alt="Smartphone">
+            <span>Smartphone</span>
+          </div>
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=80&q=80" alt="Laptop">
+            <span>Laptop</span>
+          </div>
+        </div>
+      `;
+    }
+    // Home Appliances products
+    function showHomeAppliances() {
+      document.getElementById('homeappliances-box').innerHTML = `
+        <div class="product-title">Home Appliances</div>
+        <div class="product-list">
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1503389152951-9c3d0c6b8c9a?auto=format&fit=crop&w=80&q=80" alt="Washing Machine">
+            <span>Washing Machine</span>
+          </div>
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80" alt="Microwave Oven">
+            <span>Microwave Oven</span>
+          </div>
+          <div class="product-item">
+            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80" alt="Refrigerator">
+            <span>Refrigerator</span>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+  <div class="products">
+    <div class="product-box" id="electronics-box">
+      <div class="product-img">
+        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="Electronics" style="width:80px;height:80px;">
+      </div>
+      <div class="product-title">Electronics</div>
+      <div class="product-price">Best Deals</div>
+      <a class="buy-btn" href="products.html?show=electronics">Shop Now</a>
+    </div>
+    <div class="product-box" id="homeappliances-box">
+      <div class="product-img">
+        <img src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png" alt="Home Appliances" style="width:80px;height:80px;">
+      </div>
+      <div class="product-title">Home Appliances</div>
+      <div class="product-price">Best Deals</div>
+      <a class="buy-btn" href="products.html?show=homeappliances">Shop Now</a>
+    </div>
+  </div>
+</body>
+</html>
